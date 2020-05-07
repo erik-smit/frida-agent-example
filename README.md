@@ -1,7 +1,9 @@
+Simple example to remind me how to do Frida with Android.
+
 ### How to compile & load
 
 ```sh
-$ git clone git://github.com/oleavr/frida-agent-example.git
+$ git clone git://github.com/erik-smit/frida-agent-example.git
 $ cd frida-agent-example/
 $ npm install
 $ frida -U -f com.example.android --no-pause -l _agent.js
