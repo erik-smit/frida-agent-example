@@ -1,22 +1,22 @@
-import { log } from "./logger";
+Java.perform(function () {
+    var MessageDigest = Java.use('java.security.MessageDigest');
 
-const header = Memory.alloc(16);
-header
-    .writeU32(0xdeadbeef).add(4)
-    .writeU32(0xd00ff00d).add(4)
-    .writeU64(uint64("0x1122334455667788"));
-log(hexdump(header.readByteArray(16) as ArrayBuffer, { ansi: true }));
-
-Process.getModuleByName("libSystem.B.dylib")
-    .enumerateExports()
-    .slice(0, 16)
-    .forEach((exp, index) => {
-        log(`export ${index}: ${exp.name}`);
-    });
-
-Interceptor.attach(Module.getExportByName(null, "open"), {
-    onEnter(args) {
-        const path = args[0].readUtf8String();
-        log(`open() path="${path}"`);
-    }
+    var mdupdate = MessageDigest.update.overload('[B');
+    mdupdate.implementation = function (a1: any) {
+        var result = mdupdate.call(this, a1);
+        var a1s = "";
+        for (var i = 0; i < a1.length; i++) {
+            a1s += String.fromCharCode(a1[i])
+        }
+        console.log('java.security.MessageDigest.update(' + a1s + '); => ' + result);
+        return result;
+    };
+    var mddigest = MessageDigest.digest.overload();
+    mddigest.implementation = function (a1: any) {
+        var result = mddigest.call(this, a1);
+        console.log('java.security.MessageDigest.digest(' +  '); => ' + JSON.stringify(result));
+        return result;
+    };
+    console.log('[+] functions() hooked');
+    
 });
